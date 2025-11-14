@@ -169,6 +169,7 @@ vardef quadrillagesimple (expr larg,long,espaceX,espaceY) =
   qua
 enddef;
 
+
 vardef axeh@# (expr xmin, xmax, inc, u) =
   save i,t,nb,s;
   picture axe;
@@ -185,6 +186,7 @@ vardef axeh@# (expr xmin, xmax, inc, u) =
 	  draw t shifted z[i];
 	  s:="\small\nombre{" & decimal( round(100*(xmin+i*inc))/100 ) & "}";
 	  label.bot( TEX s, z[i]);
+	  %%label.bot(textext(s),z[i]);
 	fi;
       endfor;
     fi;
@@ -209,6 +211,7 @@ vardef axev@# (expr ymin, ymax, inc, u) =
 	  draw t shifted A[i];
 	  s:="\small\nombre{" & decimal( round(100*(ymin+i*inc))/100 ) & "}";
 	  label.lft( TEX s, A[i]);
+	  %% label.lft(textext(s), A[i]);
 	fi;
       endfor;
     fi;

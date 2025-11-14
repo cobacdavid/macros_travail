@@ -17,5 +17,5 @@ input macros_const;
 input macros_geo;
 input macros_graphe;
 input macros_repere;
-input macros_stat;
+%input macros_stat;
 input macros_metaobj;

@@ -4,12 +4,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %prologues:=1;
 
-verbatimtex
-%&latex
-\documentclass{article}
-\usepackage{prof}
-\begin{document}
-etex
+% verbatimtex
+% %&latex
+% \documentclass{article}
+% \begin{document}
+% etex
 
 
 % Barycentre de deux points
@@ -279,10 +278,10 @@ def nommecube =
   label.lrt(btex $B$ etex, sommetCube[1]);
   label.rt(btex $C$ etex, sommetCube[2]);
   label.lft(btex $D$ etex, sommetCube[3]);
-  label.ulft(btex $E$ etex, sommetCube[4]);
-  label.top(btex $F$ etex, sommetCube[5]);
-  label.urt(btex $G$ etex, sommetCube[6]);
-  label.ulft(btex $H$ etex, sommetCube[7]);
+  label.ulft(btex $F$ etex, sommetCube[4]);
+  label.top(btex $G$ etex, sommetCube[5]);
+  label.urt(btex $H$ etex, sommetCube[6]);
+  label.ulft(btex $E$ etex, sommetCube[7]);
 enddef;
 
 
@@ -465,6 +464,6 @@ vardef vonkoch (expr i,j) =
   fi
 enddef;
 
-verbatimtex
-\end{document}
-etex
+% verbatimtex
+% \end{document}
+% etex
