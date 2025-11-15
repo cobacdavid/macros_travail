@@ -1,13 +1,6 @@
 % fichier de macros METAPOST
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-verbatimtex
-\documentclass{article}
-\usepackage{prof}
-\begin{document}
-etex
-
-
 vardef exp (expr x) = (mexp(256)**x) enddef;
 vardef ln  (expr x) = (mlog(x)/256)  enddef;
 vardef log (expr x) = (ln(x)/ln(10)) enddef;
