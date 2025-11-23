@@ -2,17 +2,6 @@
 % création le 16 mai 2001
 %% modification février 2007
 
-
-
-verbatimtex
-%&latex
-\documentclass{article}
-\usepackage[T1]{fontenc}
-\usepackage{aeguill}
-\begin{document}
-etex
-
-
 % suffixe : aucun ou couleur
 % Papier Millimétré
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -163,7 +152,7 @@ vardef quadrillagesimple (expr larg,long,espaceX,espaceY) =
 	  draw (i*espaceX,0)--(i*espaceX,long*espaceY);
 	endfor;
 	for i=0 upto long :
-	  draw (0,i*espaceX)--(larg*espaceX,i*espaceY);
+	  draw (0,i*espaceY)--(larg*espaceX,i*espaceY);
 	endfor;
 	);
   qua
@@ -171,7 +160,7 @@ enddef;
 
 
 vardef axeh@# (expr xmin, xmax, inc, u) =
-  save i,t,nb,s;
+  save i,t,nb,s,axe;
   picture axe;
   path t;
   string s;
@@ -181,12 +170,14 @@ vardef axeh@# (expr xmin, xmax, inc, u) =
     if (str @# ) = "ticks" :
       nb=floor((xmax-xmin)/inc);
       for i=0 upto nb :
-	z[i]=(xmin+i*inc,0) scaled u;
+	z[i]=(ceiling(xmin)+i*inc,0) scaled u;
 	if x[i] <> 0 :
 	  draw t shifted z[i];
-	  s:="\small\nombre{" & decimal( round(100*(xmin+i*inc))/100 ) & "}";
-	  label.bot( TEX s, z[i]);
-	  %%label.bot(textext(s),z[i]);
+	  s:="\small\numprint{" & decimal( round(100*(ceiling(xmin)+i*inc))/100 ) & "}";
+	  label.bot(textext(s), z[i]);
+	 else:
+	   s:="\small\numprint{0}";
+	  label.llft(textext(s), z[i]);
 	fi;
       endfor;
     fi;
@@ -195,7 +186,7 @@ vardef axeh@# (expr xmin, xmax, inc, u) =
 enddef;
 
 vardef axev@# (expr ymin, ymax, inc, u) =
-  save i,t,nb,s,A;
+  save i,t,nb,s,A,axe;
   picture axe;
   pair A[];
   path t;
@@ -206,11 +197,11 @@ vardef axev@# (expr ymin, ymax, inc, u) =
     if (str @# ) = "ticks" :
       nb:=floor((ymax-ymin)/inc);
       for i=0 upto nb :
-	A[i]=(0,ymin+i*inc) scaled u;
+	A[i]=(0,ceiling(ymin)+i*inc) scaled u;
 	if ypart A[i] <> 0 :
 	  draw t shifted A[i];
-	  s:="\small\nombre{" & decimal( round(100*(ymin+i*inc))/100 ) & "}";
-	  label.lft( TEX s, A[i]);
+	  s:="\small\numprint{" & decimal( round(100*(ceiling(ymin)+i*inc))/100 ) & "}";
+	  label.lft(textext(s), A[i]);
 	  %% label.lft(textext(s), A[i]);
 	fi;
       endfor;

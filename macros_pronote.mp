@@ -7,7 +7,7 @@ input macros_fichiers;
 input macros_geo;
 
 numeric baremes[],classement[];
-string eleves[][],pronoteGstylepolice;
+string eleves[][],pronoteGstylepolice,appreciations[];
 color pronoteGcouleurdepart,pronoteGcouleurarrivee;
 boolean pronoteGnb;
 pronoteNbEleves:=0;
@@ -154,7 +154,7 @@ vardef _pronoteGversdevoir(expr f,t,k,tri)=
   path traits[];
   string fichier;
   fichier:=f & "_tri" & decimal(t) & "_notes.csv";
-  _pronoteCSVEleves(fichier, ";");
+  _pronoteCSVnoteEleves(fichier, ";");
   %
   _pronoteTraitOrdi.l(k);
   if k=0:
@@ -265,7 +265,7 @@ vardef _pronoteGbilanelevetrimestre(expr f,t,n,largeur)=
     moy:=eleves[pronoteNbEleves][2];
     pct:=scantokens(moy)/20;
     draw triangle shifted (pct*largeur, +pronoteGepaisbarre/2-ypart(dep))
-      withcolor pct*pronoteGcouleurarrivee+(1-pct)*pronoteGcouleurdepart dashed evenly;
+      withcolor pct*pronoteGcouleurarrivee+(1-pct)*pronoteGcouleurdepart;
     );
   $
 enddef;
@@ -279,19 +279,22 @@ vardef pronoteGbilanelevetrimestre(expr f,t,n,largeur,espaceapres)=
   save tri,lbltri,$;
   picture tri,lbltri,$;
   % Identité
-  _pronoteCSVEleves(f & "_tri" & decimal(1) & "_notes.csv", ";");
+  _pronoteCSVnoteEleves(f & "_tri" & decimal(1) & "_notes.csv", ";");
   $:=image(
       label.urt(textext(pronoteGstylepolice & "\bfseries " & eleves[n][1]),
 	(0,pronoteGepaisbarre/2));
   % les encadrés par trimestre
     dec:=0pt;
     for i:=1 upto t:
-      _pronoteCSVEleves(f & "_tri" & decimal(i) & "_notes.csv", ";");
+      _pronoteCSVnoteEleves(f & "_tri" & decimal(i) & "_notes.csv", ";");
+      _pronoteCSVappEleves(f & "_tri" & decimal(i) & "_appreciations.csv", ";");
       lbltri:=textext("\bfseries Trimestre" & decimal(i) & " : "  & eleves[n][2]);
       label.rt(lbltri, (0, dec));
       tri:=_pronoteGbilanelevetrimestre(f,i,n,largeur);
       draw tri shifted (0, dec - 12pt);
-      dec:=dec + ypart(llcorner tri) - 12pt - 6pt;
+      dec:=dec + ypart(llcorner tri) - 12pt - 12pt;
+      show (appreciations[n]);
+      label.rt(textext("\begin{minipage}{\linewidth}" & appreciations[n] & "\end{minipage}"), (0,dec));
     endfor;
   % espace final
     draw (0,dec)--(0,dec-espaceapres) withcolor white;
@@ -374,7 +377,7 @@ vardef _pronoteTri(expr k)=
   _pronoteTraitOrdi.l(k);
   %
   classement[0]:=0;
-  for i:=1 upto 28:
+  for i:=1 upto pronoteNbEleves-1:
     noteeleve:=eleves[i][l];
     pos:=i;
     classement[i]:=pos;
@@ -421,7 +424,7 @@ enddef;
 
 % f fichier
 % d le délimiteur
-vardef _pronoteCSVEleves(expr f,d)=
+vardef _pronoteCSVnoteEleves(expr f,d)=
   save s_nb,ggnote,notegg,notegg_;
   %,eleves;
   string s_nb,ggnote,notegg,notegg_;
@@ -483,5 +486,18 @@ vardef _pronoteCSVEleves(expr f,d)=
       fi;
     fi;
     i:=i+1;
+  endfor;
+enddef;
+
+vardef _pronoteCSVappEleves(expr f,d)=
+  save j;
+  j:=0;
+  forever:
+    % la variable ligne est le tableau lu
+    exitunless ligneFichier.ligne(f, d);
+    if j>=1:
+      appreciations[j-1]:=ligne6;
+    fi;
+    j:=j+1;
   endfor;
 enddef;
